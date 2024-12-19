@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:siteportfolio/data/post.dart';
 import 'package:siteportfolio/main.dart';
+import 'package:siteportfolio/router.dart';
+import 'package:siteportfolio/ui/widgets/recent_post_item_widget.dart';
 
 class RecentPostsWidget extends StatelessWidget {
   const RecentPostsWidget({super.key});
@@ -25,51 +28,41 @@ class RecentPostsWidget extends StatelessWidget {
       
     
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 32, horizontal: 128),
+      padding: EdgeInsets.symmetric(vertical: 32, horizontal: 118),
       color: Color(0xFFEDF7FA),
 
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Recent posts", style: TextStyle(fontSize: 22, color: darkColor)), 
-              TextButton(
-                onPressed: (){}, child: Text("View all", style: TextStyle(fontSize: 16, color: Color(0xFF00A8CC))),
-                ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Recent posts", style: TextStyle(fontSize: 22, color: darkColor)), 
+                TextButton(
+                  onPressed: (){
+                    context.go("/block");
+                  }, 
+                  child: 
+                  Text("View all",
+                   style: 
+                   TextStyle(
+                    fontSize: 16, 
+                    color: Color(0xFF00A8CC))),
+                  ),
+              ],
+            ),
           ),
           SizedBox(height: 16,),
-
-          SizedBox(
-            height: 296,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-               itemCount: posts.length , 
-               itemBuilder: (context, index){
-                final post = posts[index];
-            
-                return Container(
-                padding: EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0, 4),
-                      blurRadius: 10,
-                      spreadRadius: 0,
-                      color: Color(0xFFBBEA1FA).withOpacity(0.25),
-                    )
-                  ]
-                ),
-                child: 
-                Text(post.title)
+          Row(
+            children: [
+              ...posts.map((post) {
+                return Expanded(
+                  child: RecentPostItemWidget(post: post),
                 );
-               },
-            ),
-          )
+              })
+            ],
+          ),
         ],
       ),
     );
